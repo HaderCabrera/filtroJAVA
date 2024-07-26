@@ -1,6 +1,7 @@
 package com.sgpzf.personSkill.application;
 
 import com.sgpzf.personSkill.domain.service.PersonSkillService;
+import com.sgpzf.personSkill.domain.entity.PersonSkill;
 
 public class PersonSkillUseCase {
     private final PersonSkillService personSkillService;
@@ -9,7 +10,7 @@ public class PersonSkillUseCase {
         this.personSkillService = personSkillService;
     }
     
-    public Boolean addSkillToPerson(Long skill){
-        return personSkillService.addSkillToPerson(skill);
+    public Boolean addSkillToPerson(PersonSkill personSkill){
+        return personSkillService.addSkillToPerson(personSkill);
     }
 }

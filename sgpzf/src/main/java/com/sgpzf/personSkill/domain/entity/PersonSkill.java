@@ -6,12 +6,14 @@ public class PersonSkill {
     private Long id;
     private Date registration_date;
     private Long idskill;
+    private Long iperson;
     public PersonSkill() {
     }
-    public PersonSkill(Long id, Date registration_date, Long idskill) {
+    public PersonSkill(Long id, Date registration_date, Long idskill, Long iperson) {
         this.id = id;
         this.registration_date = registration_date;
         this.idskill = idskill;
+        this.iperson = iperson;
     }
     public Long getId() {
         return id;
@@ -31,5 +33,12 @@ public class PersonSkill {
     public void setIdskill(Long idskill) {
         this.idskill = idskill;
     }
+    public Long getIperson() {
+        return iperson;
+    }
+    public void setIperson(Long iperson) {
+        this.iperson = iperson;
+    }
+
     
 }
