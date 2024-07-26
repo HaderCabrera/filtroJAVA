@@ -3,7 +3,6 @@ package com.sgpzf.persons.infraestructure.in;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,27 +21,42 @@ public class PersonsController {
     public void createPersons(){
         //llamar a la vista de ingresar datos
         Persons persons = viewCreatePersons();
-
-        Boolean confirmacion = personsUseCase.createPersons(persons);
-        if (confirmacion) {
-            JOptionPane.showMessageDialog(null, "Persons create succesfully","Confirmation",JOptionPane.INFORMATION_MESSAGE);
-        } else JOptionPane.showMessageDialog(null, "Persons create Error!","Denied",JOptionPane.WARNING_MESSAGE);
+        if (persons != null) {
+            Boolean confirmacion = personsUseCase.createPersons(persons);
+            if (confirmacion) {
+                JOptionPane.showMessageDialog(null, "Persons create succesfully","Confirmation",JOptionPane.INFORMATION_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Persons create Error!","Denied",JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public void modifiedPersons(){
         //llamar a vista de solicitar ID de la persona
         Long idPerson = viewIdPersons(); 
-        //llamar a servicio de retornar persona por ID
-        Persons persons = personsUseCase.getPersonsById(idPerson);
-        // llamar a vista modificar persona 
-        persons = viewModifyPersons(persons);
-        if (persons != null) {
-            Boolean confirmacion = personsUseCase.modifiedPersons(persons);
+        if (idPerson != null) {
+            //llamar a servicio de retornar persona por ID
+            Persons persons = personsUseCase.getPersonsById(idPerson);
+            if (persons != null) {
+                // llamar a vista modificar persona 
+                persons = viewModifyPersons(persons);
+                if (persons != null) {
+                    Boolean confirmacion = personsUseCase.modifiedPersons(persons);
+                    if (confirmacion) {
+                        JOptionPane.showMessageDialog(null, "Persons modify succesfully","Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                    } else JOptionPane.showMessageDialog(null, "Persons modify Error!","Denied",JOptionPane.WARNING_MESSAGE);
+                }    
+            } else JOptionPane.showMessageDialog(null, "Personaje no encontrado!!","Denied",JOptionPane.WARNING_MESSAGE); 
+        }
+    }
+
+    public void deletePersons(){
+        //llamar a la vista de Id persons
+        Long id = viewIdPersons();
+        if (id != null) {
+            Boolean confirmacion = personsUseCase.deletePersons(id);
             if (confirmacion) {
                 JOptionPane.showMessageDialog(null, "Persons modify succesfully","Confirmation",JOptionPane.INFORMATION_MESSAGE);
-            } else JOptionPane.showMessageDialog(null, "Persons modify Error!","Denied",JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Persons modify Error!","Denied",JOptionPane.WARNING_MESSAGE);  
         }
-
     }
 
     public Persons viewCreatePersons(){
@@ -112,7 +126,7 @@ public class PersonsController {
             personsNew.setAge(Long.valueOf(txtage.getText()));
             personsNew.setIdgender(Long.valueOf(txtgender.getText()));
             personsNew.setIdcity(Long.valueOf(txtciudad.getText()));
-        }
+        } else return null;
         return personsNew;
     }
 
@@ -137,7 +151,7 @@ public class PersonsController {
 
         if (option == JOptionPane.OK_OPTION) {
             idPersons = Long.valueOf(txtid.getText());
-        }
+        } else return null;
         return idPersons;
     }
 
@@ -181,7 +195,6 @@ public class PersonsController {
         txtage.setPreferredSize(new Dimension(280 , 30));
         txtage.setText(String.valueOf(persons.getAge()));
 
-
         box1.add(lblname);
         box1.add(txtname);
         box1.add(lblapellido);
@@ -209,6 +222,7 @@ public class PersonsController {
 
         if (option == JOptionPane.OK_OPTION) {
             personsNew = new Persons();
+            personsNew.setId(persons.getId());
             personsNew.setName(txtname.getText());
             personsNew.setLastname(txtapellido.getText());
             personsNew.setAddress(txtaddress.getText());
@@ -216,7 +230,10 @@ public class PersonsController {
             personsNew.setAge(Long.valueOf(txtage.getText()));
             personsNew.setIdgender(Long.valueOf(txtgender.getText()));
             personsNew.setIdcity(Long.valueOf(txtciudad.getText()));
-        }
+        } else return null;
         return personsNew;    
     }
 }
+
+
+

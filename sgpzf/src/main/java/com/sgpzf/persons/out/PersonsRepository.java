@@ -43,13 +43,13 @@ public class PersonsRepository implements PersonsService {
 
     @Override
     public Boolean modifiedPersons(Persons persons) {
-        String sql = "UPDATE INTO persons (name,lastname,idcity,address,age,email,idgender)\n" + //
-        "VALUES (?,?,?,?,?,?,?);";
+        String sql = "UPDATE persons SET name = ?, lastname = ?, idcity = ? , address = ?, age = ?, email = ?, idgender = ?  WHERE id = ?";
 
         try (Connection connection = connectionDB.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql,
                         PreparedStatement.RETURN_GENERATED_KEYS)) {
 
+                
                 statement.setString(1, persons.getName());
                 statement.setString(2, persons.getLastname());
                 statement.setLong(3, persons.getIdcity());
@@ -57,6 +57,7 @@ public class PersonsRepository implements PersonsService {
                 statement.setLong(5, persons.getAge());
                 statement.setString(6, persons.getEmail());
                 statement.setLong(7, persons.getIdgender());
+                statement.setLong(8, persons.getId());
 
             statement.executeUpdate();
 
@@ -81,6 +82,7 @@ public class PersonsRepository implements PersonsService {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     persons = new Persons();
+                    persons.setId(id);
                     persons.setName(resultSet.getString("name"));
                     persons.setLastname(resultSet.getString("lastname"));
                     persons.setIdcity(resultSet.getLong("idcity"));
@@ -96,6 +98,22 @@ public class PersonsRepository implements PersonsService {
             return null;
         }
         return persons;
+    }
+
+    @Override
+    public Boolean deletePersons(Long id) {
+        String sql = "DELETE FROM persons WHERE id = ?";
+
+        try (Connection connection = connectionDB.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

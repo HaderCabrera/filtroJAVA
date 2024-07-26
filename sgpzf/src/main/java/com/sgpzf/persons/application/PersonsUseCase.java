@@ -19,4 +19,7 @@ public class PersonsUseCase {
     public Persons getPersonsById(Long id){
         return personsService.getPersonsById(id);
     }
+    public Boolean deletePersons(Long id){
+        return personsService.deletePersons(id);
+    }
 }
