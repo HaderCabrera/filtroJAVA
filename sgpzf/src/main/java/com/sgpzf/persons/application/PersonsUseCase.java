@@ -13,4 +13,10 @@ public class PersonsUseCase {
     public Boolean createPersons(Persons persons){
         return personsService.createPersons(persons);
     }
+    public Boolean modifiedPersons(Persons persons){
+        return personsService.modifiedPersons(persons);
+    }
+    public Persons getPersonsById(Long id){
+        return personsService.getPersonsById(id);
+    }
 }
